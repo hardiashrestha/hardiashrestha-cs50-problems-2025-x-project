@@ -12,7 +12,13 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///f1users.db'
+# Database configuration
+if os.getenv('VERCEL'):
+    # On Vercel, use /tmp directory (non-persistent)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/f1users.db'
+else:
+    # Local development
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///f1users.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
