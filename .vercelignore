@@ -1,0 +1,26 @@
+# Environment variables
+.env
+.env.local
+
+# Virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Database files (ephemeral on Vercel anyway)
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# Development files
+app.py.backup
+*.log
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore

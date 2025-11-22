@@ -10,11 +10,15 @@ import re
 
 load_dotenv()
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///f1users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+# Initialize database tables
+with app.app_context():
+    db.create_all()
 
 API_SPORTS_KEY = os.getenv("API_SPORTS_KEY")
 API_SPORTS_HOST = os.getenv("API_SPORTS_HOST")
@@ -154,10 +158,16 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password_hash, password):
+        try:
+            username = request.form.get('username', '').strip()
+            password = request.form.get('password', '').strip()
+            
+            if not username or not password:
+                flash('Username and password are required')
+                return render_template('login.html')
+            
+            user = User.query.filter_by(username=username).first()
+            if user and check_password_hash(user.password_hash, password):
             session['user_id'] = user.id
             session['username'] = user.username
             flash('Logged in successfully.')
