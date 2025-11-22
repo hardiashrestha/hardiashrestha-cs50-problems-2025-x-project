@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>F1 Manager Leaderboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="css-bg-slideshow"></div>
+    <div class="container">
+    <h1>Leaderboard</h1>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Rank</th>
+            <th>Username</th>
+            <th>Trophies</th>
+            <th>Races</th>
+        </tr>
+        {% for user in users %}
+        <tr {% if session.username == user.username %}style="font-weight:bold;"{% endif %}>
+            <td>{{ loop.index }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.trophies }}</td>
+            <td>{{ user.races }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p><a href="{{ url_for('index') }}">Back to Game</a></p>
+    </div>
+</body>
+</html>

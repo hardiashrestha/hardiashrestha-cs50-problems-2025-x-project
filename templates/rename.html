@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rename Username</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<div class="css-bg-slideshow"></div>
+    {% include 'navbar.html' %}
+<div class="container">
+    <h2>Change Username</h2>
+    <form method="POST">
+        <label>Current Username: <b>{{ user.username }}</b></label><br><br>
+        <label>New Username:</label>
+        <input type="text" name="new_username" required>
+        <button type="submit">Rename</button>
+    </form>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul style="color:#d90429;">
+                {% for msg in messages %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</div>
+</body>
+</html>

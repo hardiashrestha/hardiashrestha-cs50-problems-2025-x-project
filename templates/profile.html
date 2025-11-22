@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+    {% include 'navbar.html' %}
+    <h1>{{ user.username }}'s Profile</h1>
+    <p>Trophies: {{ user.trophies }}</p>
+    <p>Races: {{ user.races }}</p>
+    <p>Win Rate: {{ '%.1f' % (100*user.trophies/user.races) if user.races else 0 }}%</p>
+    </div>
+</body>
+</html>

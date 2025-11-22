@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Driver Transfer Market</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="css-bg-slideshow"></div>
+    {% include 'navbar.html' %}
+<div class="container">
+    <h2>Driver Transfer Market</h2>
+    <p>Your trophies: <b>{{ user.trophies }}</b></p>
+    {% if message %}
+      <p style="color: #d90429;">{{ message }}</p>
+    {% endif %}
+
+    <h3>Your Drivers</h3>
+    <ul>
+      {% for d in user_drivers %}
+        <li>
+          {{ d }}
+          <form method="post" style="display:inline;">
+            <input type="hidden" name="driver" value="{{ d }}">
+            <input type="hidden" name="action" value="release">
+            <button type="submit">Release (+{{ (drivers|selectattr('name', 'equalto', d)|first).price }})</button>
+          </form>
+        </li>
+      {% else %}
+        <li>No drivers owned.</li>
+      {% endfor %}
+    </ul>
+
+    <h3>Available Drivers</h3>
+    <ul>
+      {% for d in drivers %}
+        {% if d.name not in user_drivers %}
+        <li>
+          {{ d.name }} (Cost: {{ d.price }})
+          <form method="post" style="display:inline;">
+            <input type="hidden" name="driver" value="{{ d.name }}">
+            <input type="hidden" name="action" value="buy">
+            <button type="submit">Buy</button>
+          </form>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    <p><a href="{{ url_for('index') }}">Back to Game</a></p>
+</div>
+</body>
+</html>

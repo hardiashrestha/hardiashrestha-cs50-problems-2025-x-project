@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>F1 Race Match</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .lap-update { font-size: 1.2em; margin: 18px 0; }
+        .final-result { font-size: 1.4em; font-weight: bold; margin: 28px 0; }
+    </style>
+</head>
+<body>
+    <div class="css-bg-slideshow"></div>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <h2>Race: {{ track }} ({{ weather }})</h2>
+        <h3>Bot's Setup</h3>
+        <p>{{ bot_details }}</p>
+
+        <div id="lap-info" class="lap-update"></div>
+        <div id="final-result" class="final-result" style="display:none;">{{ final_result }}</div>
+        <a id="continue-link" href="{{ url_for('index') }}" style="display:none;">Start New Race</a>
+    </div>
+    <script>
+        const lapLeaders = {{ lap_leaders|tojson }};
+        const lapInfo = document.getElementById('lap-info');
+        const finalResult = document.getElementById('final-result');
+        const continueLink = document.getElementById('continue-link');
+        let lap = 0;
+
+        function showNextLap() {
+            if (lap < lapLeaders.length) {
+                const info = lapLeaders[lap];
+                if (info.leader === "user") {
+                    lapInfo.innerHTML = `Lap ${info.lap}: <span style="color:#ffeb00;">You are leading!</span>`;
+                } else {
+                    lapInfo.innerHTML = `Lap ${info.lap}: <span style="color:#ff0044;">Bot is leading!</span>`;
+                }
+                lap++;
+                setTimeout(showNextLap, 2500);
+            } else {
+                lapInfo.style.display = "none";
+                finalResult.style.display = "block";
+                continueLink.style.display = "inline-block";
+            }
+        }
+        showNextLap();
+    </script>
+</body>
+</html>

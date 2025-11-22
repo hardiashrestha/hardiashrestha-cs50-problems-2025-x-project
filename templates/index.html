@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>F1 Manager Game - CS50 Final Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="css-bg-slideshow"></div>
+    {% include 'navbar.html' %}
+    <div class="container">
+    <h1>F1 Manager Game</h1>
+    <p>A flask based webapp developed by Shrestha Hardia as Harvard CS50 final project.</p>
+    {% if session.username %}
+    <h2>Welcome {{ session.username }} </h2>
+      <p></p>
+      <p>Your trophies: {{ user.trophies }} | Races: {{ user.races }}</p>
+      <p><a href="{{ url_for('leaderboard') }}">View Leaderboard</a></p>
+    {% endif %}
+    <form method="POST">
+        <label>Track Selection:</label>
+        <select name="track">
+            <option value="Monza">Monza (High speed, few corners)</option>
+            <option value="Monaco">Monaco (Tight, twisty, low speed)</option>
+            <option value="Silverstone">Silverstone (Balanced)</option>
+            <option value="Spa">Spa (Mixed, long lap)</option>
+            <option value="Suzuka">Suzuka (Technical, many corners)</option>
+        </select><br><br>
+
+        <label>Weather:</label>
+        <input type="text" name="weather" value="{{ weather or 'Sunny' }}" readonly>
+        <button type="submit" name="generate_weather" value="1">Randomize Weather</button><br><br>
+
+        <label for="wing-range">Wing Setup</label>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <span style="min-width: 40px;">Speed</span>
+            <input id="wing-range" name="wing" type="range" min="-50" max="50" value="0" style="flex:1;">
+            <span style="min-width: 40px;">Grip</span>
+        </div>
+        <div style="text-align:center; margin-bottom:16px;">
+            <span id="wing-value" style="font-weight:bold; color:#003049;">0</span>
+        </div>
+        <script>
+        const wingSlider = document.getElementById('wing-range');
+        const wingValue = document.getElementById('wing-value');
+        if (wingSlider && wingValue) {
+            function updateWingValue() {
+                wingValue.textContent = wingSlider.value;
+            }
+            wingSlider.addEventListener('input', updateWingValue);
+            updateWingValue();
+        }
+        </script>
+
+        <label for="brake-balance">Brake Balance</label>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <span style="min-width: 40px;">Front</span>
+            <input id="brake-balance" name="brake" type="range" min="-50" max="50" value="0" style="flex:1;">
+            <span style="min-width: 40px;">Rear</span>
+        </div>
+        <div style="text-align:center; margin-bottom:16px;">
+            <span id="brake-value" style="font-weight:bold; color:#003049;">0</span>
+        </div>
+        <script>
+        const brakeSlider = document.getElementById('brake-balance');
+        const brakeValue = document.getElementById('brake-value');
+        if (brakeSlider && brakeValue) {
+            function updateBrakeValue() {
+                brakeValue.textContent = brakeSlider.value;
+            }
+            brakeSlider.addEventListener('input', updateBrakeValue);
+            updateBrakeValue();
+        }
+        </script>
+
+        <label for="suspension-range">Suspension</label>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <span style="min-width: 40px;">Low</span>
+            <input id="suspension-range" name="suspension" type="range" min="-50" max="50" value="0" style="flex:1;">
+            <span style="min-width: 40px;">High</span>
+        </div>
+        <div style="text-align:center; margin-bottom:16px;">
+            <span id="suspension-value" style="font-weight:bold; color:#003049;">0</span>
+        </div>
+        <script>
+        const suspensionSlider = document.getElementById('suspension-range');
+        const suspensionValue = document.getElementById('suspension-value');
+        if (suspensionSlider && suspensionValue) {
+            function updateSuspensionValue() {
+                suspensionValue.textContent = suspensionSlider.value;
+            }
+            suspensionSlider.addEventListener('input', updateSuspensionValue);
+            updateSuspensionValue();
+        }
+        </script>
+
+        <label>Tyre Choice:</label>
+        <select name="tyre">
+            <option value="Soft">Soft</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+            <option value="Wet">Wet</option>
+            <option value="Intermediate">Intermediate</option>
+        </select><br><br>
+
+        <label>Number of Laps:</label>
+        <input name="laps" type="number" min="1" max="100" value="5"><br><br>
+
+        <button type="submit">Submit Car Setup</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul style="color:#d90429;">
+                {% for msg in messages %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {% if bot_response %}
+        <h3>Bot Response:</h3>
+        <p>{{ bot_response }}</p>
+    {% endif %}
+    {% if race_result %}
+        <h3>Race Result:</h3>
+        <p>{{ race_result }}</p>
+        <a href="{{ url_for('pitstop') }}">Go to Pit Stop</a>
+    {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<div class="navbar">
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('leaderboard') }}">Leaderboard</a>
+    <a href="{{ url_for('transfer') }}">Transfers</a>
+    <a href="{{ url_for('f1_live') }}">Live F1 Standings</a>
+    <a href="{{ url_for('f1_history') }}">Historical Standings</a>
+    {% if session.username %}
+        <div class="dropdown" style="display:inline-block; position:relative;">
+            <button class="dropbtn" style="background:none; border:none; color:#fff; font-weight:bold; cursor:pointer;">
+                {{ session.username }} &#x25BC;
+            </button>
+            <div class="dropdown-content" style="display:none; position:absolute; right:0; background: linear-gradient(120deg, #80142B 30%, #00A19C 80%); min-width:220px; box-shadow:0 8px 16px rgba(0,0,0,0.18); z-index:999; border-radius:8px; padding:12px;">
+                <div style="color:#003049; font-weight:bold; margin-bottom:8px;">🏆 Trophies: {{ user.trophies }}</div>
+                <div style="margin-bottom:8px;">
+                    <span style="font-weight:bold; color:#003049;">Your Drivers:</span>
+                    <ul style="margin:6px 0 0 14px; padding:0;">
+                        {% set user_drivers = user.drivers.split(',') if user.drivers else [] %}
+                        {% for d in user_drivers %}
+                            <li style="color:#222;">{{ d }}</li>
+                        {% else %}
+                            <li style="color:#888;">None</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <a href="{{ url_for('rename') }}" style="color:#003049; display:block; margin:8px 0;">Rename Username</a>
+                <a href="{{ url_for('change_password') }}" style="color:#003049;; display:block; margin:8px 0;">Change Password</a>
+                <form method="POST" action="{{ url_for('delete_account') }}" onsubmit="return confirm('Are you sure you want to delete your account? This cannot be undone!');">
+                    <button type="submit" style="color:#fff; background:#d90429; border:none; border-radius:4px; padding:6px 12px; margin-top:4px; width:100%; cursor:pointer;">Delete Account</button>
+                </form>
+                <a href="{{ url_for('logout') }}" style="color:#003049; display:block; margin-top:8px;">Logout</a>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var btn = document.querySelector('.dropbtn');
+                var content = document.querySelector('.dropdown-content');
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                });
+                document.addEventListener('click', function() {
+                    content.style.display = 'none';
+                });
+            });
+        </script>
+    {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+    {% endif %}
+</div>

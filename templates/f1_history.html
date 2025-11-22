@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>F1 Historical Standings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="css-bg-slideshow"></div>
+{% include 'navbar.html' %}
+<div class="container">
+    <h2>2023 F1 Driver Standings (2023-24)</h2>
+    <table>
+        <tr>
+            <th>Position</th>
+            <th>Driver</th>
+            <th>Nationality</th>
+            <th>Team</th>
+            <th>Points</th>
+        </tr>
+        {% for s in standings %}
+        <tr>
+            <td>{{ s.position }}</td>
+            <td>{{ s.driver }}</td>
+            <td>{{ s.nationality }}</td>
+            <td>{{ s.team }}</td>
+            <td>{{ s.points }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>

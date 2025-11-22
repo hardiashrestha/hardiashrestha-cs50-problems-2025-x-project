@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>F1 Manager Game - Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .css-bg-slideshow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            animation: bgMultiSlideShow 60s infinite;
+        }
+
+        @keyframes bgMultiSlideShow {
+            0%   { background-image: url('/static/bg/8.jpg'); }
+            20%  { background-image: url('/static/bg/3.jpg'); }
+            40%  { background-image: url('/static/bg/5.jpg'); }
+            60%  { background-image: url('/static/bg/6.jpg'); }
+            80%  { background-image: url('/static/bg/7.jpg'); }
+            100% { background-image: url('/static/bg/8.jpg'); }
+        }
+
+        .welcome-container {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 18px;
+            padding: 50px 40px;
+            max-width: 780px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+            color: #fff;
+            z-index: 1;
+        }
+
+        .welcome-title {
+            font-size: 2.8em;
+            letter-spacing: 2px;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .welcome-motivation {
+            font-size: 1.05em;
+            line-height: 1.8em;
+            margin-bottom: 32px;
+            color: #ccc;
+        }
+
+        .highlight {
+            color: #ffeb00;
+            font-weight: bold;
+        }
+
+        .welcome-btn {
+            padding: 14px 30px;
+            margin: 10px 15px;
+            color: #fff;
+            background-color: #d90429;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+            display: inline-block;
+        }
+
+        .welcome-btn:hover {
+            background-color: #003049;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-container {
+                padding: 28px 18px;
+            }
+
+            .welcome-title {
+                font-size: 2em;
+            }
+
+            .welcome-motivation {
+                font-size: 1em;
+            }
+
+            .welcome-btn {
+                width: 90%;
+                margin: 10px auto;
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="css-bg-slideshow"></div>
+
+    <div class="welcome-container">
+        <div class="welcome-title">F1 Manager Game</div>
+        <div class="welcome-motivation">
+            <h2 style="margin-top: 0;">Welcome F1 Lovers & 🚀 CS50 Enthusiasts!</h2>
+            Whether you're a strategy genius or racing fanatic, this game puts you in the pit wall seat.<br><br>
+            <span class="highlight">Created by SHRESTHA HARDIA</span> as a final <span class="highlight">CS50 project</span>, My Github username: <span class="highlight">hardiashrestha</span> & My EDX username: <span class="highlight">shresthahardia</span> .<br><br>
+            This Flask-based web app combines the thrill of Formula 1 strategy with modern technologies like Flask, SQLAlchemy, Jinja2, DeepSeek API and real-world F1 data. <br><br>
+            Select your drivers, build your setup, and battle the AI across weather and tracks. 🏁
+        </div>
+        <a href="{{ url_for('login') }}" class="welcome-btn">Login</a>
+        <a href="{{ url_for('register') }}" class="welcome-btn">Register</a>
+    </div>
+
+</body>
+</html>
