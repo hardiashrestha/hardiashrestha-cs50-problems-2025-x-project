@@ -172,7 +172,7 @@ def login():
                         session['username'] = user.username
                         flash('Logged in successfully.')
                         return redirect(url_for('index'))
-                    except Exception as e:
+        except Exception as e:
             print(f'Login error: {str(e)}')  # Logs to Vercel
             flash('An error occurred during login. Please try again.')
             return render_template('login.html')
